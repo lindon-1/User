@@ -20,13 +20,9 @@
 
 
 
-    <select id="selectByUserId" resultMap="role">
-        select * from role where user_id = #{userId}
-    </select>
-
 
     <insert id="save">
-        insert into role(name,user_id) values(#{name}, #{userId})
+        insert into role(name) values(#{name})
     </insert>
 
     <select id="findByUserId" resultMap="role">
