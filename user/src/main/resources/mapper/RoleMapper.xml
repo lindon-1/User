@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.lindl.user.mapper.RoleMapper">
+    <resultMap id="role" type="com.lindl.user.po.Role">
+        <id column="id" property="id" jdbcType="BIGINT"></id>
+        <result column="name" property="name" jdbcType="VARCHAR"></result>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"></result>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+
+    <sql id="role_column">
+        r.id,r.name,r.create_time,r.update_time
+    </sql>
+
+    <select id="selectById" resultMap="role">
+        select * from role where id = #{id}
+    </select>
+
+
+
+    <select id="selectByUserId" resultMap="role">
+        select * from role where user_id = #{userId}
+    </select>
+
+
+    <insert id="save">
+        insert into role(name,user_id) values(#{name}, #{userId})
+    </insert>
+
+    <select id="findByUserId" resultMap="role">
+        select
+         <include refid="role_column"></include>
+         from role r right join user_role ur ON r.id = ur.role_id where ur.user_id = #{userId}
+    </select>
+
+
+
+
+
+</mapper>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.lindl.user.mapper.UserMapper">
+    <resultMap id="user" type="com.lindl.user.po.User">
+        <id column="id" property="id" jdbcType="BIGINT"></id>
+        <result column="name" property="name" jdbcType="VARCHAR"></result>
+        <result column="password" property="password" jdbcType="VARCHAR"></result>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"></result>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"></result>
+    </resultMap>
+    <sql id="user_columns">
+        id, name,password
+    </sql>
+
+    <insert id="save" >
+        insert into user(name,password) values(#{name}, #{password})
+    </insert>
+
+    <select id="selectById" resultMap="user">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="findByName" resultMap="user">
+        select * from user where name = #{name}
+    </select>
+
+    <select id="findAll" resultMap="user">
+        select * from user
+    </select>
+
+    <select id="findByDate" resultMap="user">
+        select * from user where create_time >= #{createTime}
+    </select>
+
+    <select id="findByDateBetween" resultMap="user" parameterType="java.util.HashMap">
+        select * from user where create_time >= #{startTime} and   create_time &lt;= #{endTime}
+
+    </select>
+
+    <select id="getCountByCondition" resultType="int" >
+        select count(*) from user
+        <where>
+            <if test="name != null and name != ''">
+                name like #{name}
+            </if>
+
+            <if test="createTime != null">
+                and create_time &lt; #{createTime}
+            </if>
+        </where>
+    </select>
+
+
+
+
+
+</mapper>
