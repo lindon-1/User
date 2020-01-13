@@ -11,7 +11,7 @@ import java.util.Map;
  * @Author: ldl
  * @CreateDate: 2020/1/13 15:44
  */
-public abstract class MyCodeMsg {
+public class MyCodeMsg {
 
     private static Map<Integer, String> msg = new HashMap<>();
 

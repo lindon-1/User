@@ -1,5 +1,7 @@
 package com.lindl.user.aop;
 
+import com.lindl.user.common.exception.MyCodeMsg;
+import com.lindl.user.common.exception.MyExceptionFactory;
 import com.lindl.user.mapper.ResourceMapper;
 import com.lindl.user.mapper.RoleMapper;
 import com.lindl.user.mapper.UserMapper;
@@ -43,6 +45,9 @@ public class PermissionAccessAspect {
     @Resource
     private ResourceMapper resourceMapper;
 
+    @Resource
+    private MyExceptionFactory myExceptionFactory;
+
 
     @Pointcut(value = "@annotation(com.lindl.user.aop.UserAccess)")
     public void pointcut(){};
@@ -70,7 +75,7 @@ public class PermissionAccessAspect {
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String authorization = request.getHeader("Authorization");
             if (StringUtils.isEmpty(authorization)) {
-                throw new Exception("缺少校验参数 Authorization");
+                throw myExceptionFactory.getInstance(MyCodeMsg.PARAMTER_MISS);
             }
             User user = userMapper.selectById(Long.parseLong(authorization));
             if (Objects.isNull(user)) {
