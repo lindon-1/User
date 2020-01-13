@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.thymeleaf.util.ListUtils;
+import org.thymeleaf.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -68,6 +69,9 @@ public class PermissionAccessAspect {
             List<String> roles = Arrays.asList(role.split(","));
             HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
             String authorization = request.getHeader("Authorization");
+            if (StringUtils.isEmpty(authorization)) {
+                throw new Exception("缺少校验参数 Authorization");
+            }
             User user = userMapper.selectById(Long.parseLong(authorization));
             if (Objects.isNull(user)) {
                 throw new Exception("该用户不存在");
