@@ -47,7 +47,7 @@ public class LoginController {
         return loginService.loginOut(resParam);
     }
 
-    
+
     public void test() {
 		int i = 0;
 	}
