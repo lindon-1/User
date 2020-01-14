@@ -1,6 +1,7 @@
 package com.lindl.user.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.lindl.user.aop.UserAccess;
 import com.lindl.user.common.ResParam;
 import com.lindl.user.common.Result;
 import com.lindl.user.dto.LoginParam;
@@ -32,6 +33,7 @@ public class LoginController {
      * @return
      */
     @PostMapping(value = "/user/login")
+    @UserAccess(role = "老师")
     public Result<LoginInfoVo> login(@RequestBody ResParam<LoginParam> resParam) {
         return loginService.login(resParam);
     }
