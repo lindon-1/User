@@ -9,6 +9,9 @@ import com.lindl.user.mapper.UserMapper;
 import com.lindl.user.po.User;
 import com.lindl.user.service.LoginService;
 import com.lindl.user.vo.LoginInfoVo;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,11 +23,14 @@ import java.util.Objects;
  * @CreateDate: 2019/12/30 17:49
  */
 @Service
+@Slf4j
 public class LoginServiceImpl implements LoginService {
     @Resource
     private UserMapper userMapper;
     @Resource
     private RedisImpl redis;
+
+    private final Logger logger = LoggerFactory.getLogger(LoginService.class);
 
     @Override
     public Result<LoginInfoVo> login(ResParam<LoginParam> resParam) {
@@ -41,6 +47,7 @@ public class LoginServiceImpl implements LoginService {
             return Result.build(506, "该用户密码不正确", null);
         }
         redis.set(user.getName(), user.getId().toString());
+        logger.info("user login info: {} ", redis.get(user.getName()));
         LoginInfoVo loginInfoVo = new LoginInfoVo();
         loginInfoVo.setUser(user);
         System.out.println(user);
@@ -50,6 +57,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public Result<LoginInfoVo> loginOut(ResParam<LoginParam> resParam) {
         redis.delete(resParam.getPdata().getUserName());
+        logger.info("user loginout info: {}", redis.get(resParam.getPdata().getUserName()));
         return Result.build(200, "退出成功", null);
     }
 }
