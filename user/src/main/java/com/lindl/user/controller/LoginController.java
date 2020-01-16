@@ -48,4 +48,8 @@ public class LoginController {
     }
 
 
+    public void test() {
+		int i = 0;
+	}
+
 }
